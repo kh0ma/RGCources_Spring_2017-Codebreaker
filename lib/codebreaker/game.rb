@@ -5,7 +5,8 @@ module Codebreaker
     end
 
     def start
-      @secret_code = '1234'
+      4.times.each { @secret_code.concat((1 + rand(6)).to_s) }
+      @secret_code
     end
   end
 end
