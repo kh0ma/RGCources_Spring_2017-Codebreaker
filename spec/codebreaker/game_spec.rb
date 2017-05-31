@@ -21,6 +21,12 @@ module Codebreaker
       it 'saves secret code with numbers from 1 to 6' do
         expect(game.instance_variable_get(:@secret_code)).to match(/[1-6]+/)
       end
+
+      it 'call rand function' do
+        allow(game).to receive(:rand).and_return(1)
+        expect(game).to receive(:rand)
+        game.start
+      end
     end
   end
 end
