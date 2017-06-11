@@ -1,0 +1,2 @@
+class HintException < StandardError
+end

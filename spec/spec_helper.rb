@@ -9,6 +9,6 @@ RSpec.configure do |config|
   config.disable_monkey_patching!
 
   config.expect_with :rspec do |c|
-    c.syntax = :expect
+    c.syntax = [:expect, :to]
   end
 end
