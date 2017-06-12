@@ -55,10 +55,23 @@ module Codebreaker
         allow(game).to receive(:valid_code?).with(any_args)
         allow(ch).to receive(:print_exit_message)
         allow(ch).to receive(:print_game_start)
+        allow(ch).to receive(:print_select_attempts)
+        allow(ch).to receive(:print_lose)
+        allow(ch).to receive(:print_play_again?).and_return(false)
       end
 
-      it 'call greeting' do
+      it 'call greeting when play_again is false' do
         expect(ch).to receive(:print_greeting)
+        game.run(false)
+      end
+
+      it 'do not call greeting when play_again is true' do
+        expect(ch).not_to receive(:print_greeting)
+        game.run(true)
+      end
+
+      it 'call .print_select_attempts' do
+        expect(ch).to receive(:print_select_attempts)
         game.run
       end
 
@@ -75,11 +88,13 @@ module Codebreaker
 
       context 'when attempts is set' do
         before(:each) do
-          game.instance_variable_set(:@attempts,1)
+          game.instance_variable_set(:@attempts,2)
           allow(ch).to receive(:print_guess_wrong)
           allow(ch).to receive(:print_marked_response)
           allow(game).to receive(:valid_code?).and_return(true)
           allow(game).to receive(:check_code).with(any_args)
+          allow(game).to receive(:check_code)
+                             .and_return({exact_match:3,number_match:0})
         end
         it 'call start' do
           expect(game).to receive(:start)
@@ -135,10 +150,50 @@ module Codebreaker
             game.run
           end
 
+          context 'win game' do
+            before(:each) do
+              allow(game).to receive(:check_code)
+                                 .and_return({exact_match:4,number_match:0})
+              allow(ch).to receive(:print_win).with(any_args)
+              allow(ch).to receive(:print_play_again?)
+            end
+            it 'call print_win' do
+              expect(ch).to receive(:print_win).with(any_args)
+              game.run
+            end
+
+            it 'do not call print_win when game is not won' do
+              allow(game).to receive(:check_code)
+                                 .and_return({exact_match:3,number_match:0})
+              expect(ch).not_to receive(:print_win).with(any_args)
+              game.run
+            end
+
+            it 'call print_play_again?' do
+              expect(ch).to receive(:print_play_again?).with(any_args)
+              game.run
+            end
+          end
+
           it 'call print_marked_response' do
             expect(ch).to receive(:print_marked_response).with(any_args)
             game.run
           end
+
+          it 'do not call print_marked_response if attempts >= 0' do
+            game.instance_variable_set(:@attempts,1)
+            expect(ch).not_to receive(:print_marked_response).with(any_args)
+            game.run
+          end
+        end
+      end
+      context 'lose game' do
+        before(:each) do
+          game.instance_variable_set(:@attempts,0)
+        end
+        it 'call print_lose' do
+          expect(ch).to receive(:print_lose).with(any_args)
+          game.run
         end
       end
     end
@@ -194,6 +249,10 @@ module Codebreaker
       it 'return 2,2 if 2 an exact match, and 2 a number match' do
         game.instance_variable_set(:@secret_code,'1134')
         expect(game.check_code('1143')).to eq({exact_match:2,number_match:2})
+      end
+      it 'return 1,0 if "secret_code = 5426", and "guess = 1222"' do
+        game.instance_variable_set(:@secret_code,'5426')
+        expect(game.check_code('1222')).to eq({exact_match:1,number_match:0})
       end
     end
   end

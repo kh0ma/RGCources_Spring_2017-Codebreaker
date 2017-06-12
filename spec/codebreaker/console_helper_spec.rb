@@ -104,5 +104,54 @@ module Codebreaker
         ch.print_left_attempts(3)
       end
     end
+
+    describe '.print_select_attempts' do
+      it 'call .write_message with SELECT_ATTEMPTS' do
+        expect(ch).to receive(:write_message).with(SELECT_ATTEMPTS)
+        ch.print_select_attempts
+      end
+    end
+
+    describe '.print_win' do
+      it 'call .write_message with WIN and code "1234"' do
+        expect(ch).to receive(:write_message).with(WIN % '1234')
+        ch.print_win('1234')
+      end
+    end
+
+    describe '.print_lose' do
+      it 'call .write_message with GAME_OVER and code "1234"' do
+        expect(ch).to receive(:write_message).with(GAME_OVER % '1234')
+        ch.print_lose('1234')
+      end
+    end
+
+    describe '.print_play_again?' do
+      before(:each) do
+        allow(ch).to receive(:write_message).with(any_args)
+        allow(STDIN).to receive(:gets).with(any_args).and_return('no')
+      end
+
+      it 'call .write_message with PLAY_AGAIN' do
+        expect(ch).to receive(:write_message).with(PLAY_AGAIN)
+        ch.print_play_again?
+      end
+
+      it 'return true if player say #yes' do
+        allow(STDIN).to receive(:gets).and_return('yes')
+        expect(ch.print_play_again?).to be_truthy
+      end
+
+      it 'return false if player say #no' do
+        allow(STDIN).to receive(:gets).and_return('no')
+        expect(ch.print_play_again?).to be_falsey
+      end
+
+      it 'call .write_message with PLAY_AGAIN_WRONG when answer is wrong' do
+        allow(STDIN).to receive(:gets).and_return(' ','yes')
+        expect(ch).to receive(:write_message).with(PLAY_AGAIN).with(PLAY_AGAIN_WRONG).ordered
+        ch.print_play_again?
+      end
+    end
   end
 end
