@@ -22,14 +22,6 @@ module Codebreaker
           ch.read_str
         }.to raise_error(ExitException)
       end
-      context 'in game' do
-        it 'should raise HintException on "hint"' do
-          expect{
-            allow(STDIN).to receive(:gets).and_return('hint')
-            ch.read_str(true)
-          }.to raise_error(HintException)
-        end
-      end
     end
 
     describe '.print_exit_message' do

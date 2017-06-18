@@ -5,7 +5,6 @@ module Messages
 #1 -  8 attempts;
 #2 - 12 attempts;
 #3 - 15 attempts.
-If you want a hint type #hint to console during your playing.
 If you want to exit type #exit'
 
   ATTEMPTS_WRONG = 'Please, enter a number from 1 to 3'

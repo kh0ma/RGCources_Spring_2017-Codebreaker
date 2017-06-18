@@ -1,2 +1,0 @@
-class HintException < StandardError
-end
