@@ -1,8 +1,5 @@
 module Codebreaker
   class Game
-
-    attr_reader :secret_code
-
     def start
       @secret_code = Array.new(4) { rand(1..6) }.join
     end
