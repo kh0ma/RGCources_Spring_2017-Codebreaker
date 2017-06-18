@@ -36,24 +36,7 @@ module Codebreaker
       end
 
       def print_marked_response(attempts, checked_code)
-        sings = '....'
-        checked_code[:exact_match].times do
-          sings.chars.each_with_index do |_, index|
-            if(sings[index] == '.')
-              sings[index] = '+'
-              break
-            end
-          end
-        end
-        checked_code[:number_match].times do
-          sings.chars.each_with_index do |_, index|
-            if(sings[index] == '.')
-              sings[index] = '-'
-              break
-            end
-          end
-        end
-        write_message(sings)
+        write_message(checked_code)
         print_left_attempts(attempts)
       end
 

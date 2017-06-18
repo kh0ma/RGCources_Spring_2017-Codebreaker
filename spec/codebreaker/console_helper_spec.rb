@@ -73,28 +73,14 @@ module Codebreaker
       end
 
       it 'call .print_left_attempts with 3' do
+        allow(ch).to receive(:write_message)
         expect(ch).to receive(:print_left_attempts).with(3)
-        ch.print_left_attempts(3)
+        ch.print_marked_response(3,'++++')
       end
 
-      it 'call .write_message with "...." when 0,0' do
+      it 'call .write_message with "...." when "...."' do
         expect(ch).to receive(:write_message).with('....')
-        ch.print_marked_response(3,{exact_match: 0, number_match:0})
-      end
-
-      it 'call .write_message with "++++" when 4,0' do
-        expect(ch).to receive(:write_message).with('++++')
-        ch.print_marked_response(3,{exact_match: 4, number_match:0})
-      end
-
-      it 'call .write_message with "++-." when 2,1' do
-        expect(ch).to receive(:write_message).with('++-.')
-        ch.print_marked_response(3,{exact_match: 2, number_match:1})
-      end
-
-      it 'call .write_message with "----" when 0,4' do
-        expect(ch).to receive(:write_message).with('----')
-        ch.print_marked_response(3,{exact_match: 0, number_match:4})
+        ch.print_marked_response(3,'....')
       end
     end
 

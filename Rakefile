@@ -7,6 +7,6 @@ RSpec::Core::RakeTask.new(:spec)
 task :default => :spec
 
 task :play do
-  Codebreaker::Game.new.run
+  Codebreaker::Controller.new.run
 end
 
