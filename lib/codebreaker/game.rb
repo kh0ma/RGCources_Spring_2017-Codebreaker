@@ -5,20 +5,15 @@ module Codebreaker
     end
 
     def check_code(guess_code)
-      return '++++' if(@secret_code==guess_code)
-
+      return '++++' if @secret_code == guess_code
       @guessing_chars = guess_code.chars
       @secret_chars = @secret_code.chars
-
-      result = ''
-      result += '+'*get_exact_match
-      result += '-'*get_number_match
-
-      result
+      '+' * exact_match + '-' * number_match
     end
 
     private
-    def get_exact_match
+
+    def exact_match
       result = 0
       zipped = @secret_chars.zip(@guessing_chars)
       result += zipped.count { |el| el.uniq.length == 1 }
@@ -27,15 +22,13 @@ module Codebreaker
       result
     end
 
-    private
-    def get_number_match
+    def number_match
       result = 0
-      @guessing_chars.each  do |char|
+      @guessing_chars.each do |char|
         find = @secret_chars.index(char)
-        if(find)
-          result += 1
-          @secret_chars.delete_at(find)
-        end
+        next unless find
+        result += 1
+        @secret_chars.delete_at(find)
       end
       result
     end
