@@ -1,7 +1,17 @@
 module Codebreaker
   class Game
+    attr_accessor :attempts
+
+    def initialize
+      @attempts = 8
+    end
+
     def start
-      @secret_code = Array.new(4) { rand(1..6) }.join
+      @secret_code = generate_code
+    end
+
+    def generate_code
+      Array.new(4) { rand(1..6) }.join
     end
 
     def check_code(guess_code)
@@ -11,6 +21,8 @@ module Codebreaker
 
       exact_match_evaluating
       number_match_evaluating
+
+      self.attempts -= 1
 
       @guessing_chars
         .delete_if { |el| /\d/ =~ el }
