@@ -1,6 +1,6 @@
 module Codebreaker
   class Game
-    attr_accessor :attempts
+    attr_accessor :attempts, :secret_code
 
     def initialize
       @attempts = 8
