@@ -8,7 +8,8 @@ module Codebreaker
 
     def messages
       begin
-        file = File.new('./messages/messages.yml', 'r')
+        path = File.expand_path('../../../messages/messages.yml', __FILE__)
+        file = File.new(path, 'r')
         messages = YAML.load(file.read)
       rescue IOError => e
         puts "Exception: #{e}"
